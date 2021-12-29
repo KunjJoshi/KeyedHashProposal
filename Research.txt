@@ -1,0 +1,89 @@
+take key AND msg as input
+convert msg AND key to binary
+binary divide the msg with key
+append 0s to the ORiginal msg such that len(msg)%64==0
+consider the remainder as AVC
+find out the smallest number such that:
+num%64==0
+num>key
+count number of bits in msg value.
+append 0s to the avc such that new number of bits in avc*some number k=num
+append the new avc k times to the msg
+
+Now Take 8 numbeRS:
+
+A: ORiginal Msg repeatedly XOR with the Key (64 bits 8x8)
+B: part of new msg such that bit at Keyth position is 64th bit XOR with key (64 bits)
+C: Key (first 64 bits)
+D: quotient of msg/key (first 64 bits)
+E: avc repeated to make a 64 bit number XOR with key(64 bits)
+F:  A XOR B
+G: C XOR D
+H: B XOR C 
+
+if keyth position of msg is 0:
+Divide the entire msg into bits of 64 each AND XOR them recuRSively with A-H:
+After every round change A-H as follows:
+if (num of round%8==0)
+A: ((A XOR LS2 F) AND ( C OR NOT D)) XOR LS2(( E AND NOT B) XOR (H OR G))
+B: ((LS3 B OR D) OR (F XOR C)) AND ((LS2 G AND E) OR ( A XOR NOT H))
+C: (( C AND A) OR (B XOR E)) XOR (RS3((G AND LS2 F) XOR (NOT D AND H))
+D: (RS2((D AND H) XOR (C OR A)) AND ((B XOR G) OR ( F AND NOT E))
+E: ((E AND A) OR ( NOT C XOR D)) XOR ((LS3 B AND H) OR (F XOR G))
+F: ((F AND NOT D) OR LS2(C OR E)) AND ((G XOR H) XOR ( B AND A))
+G: (( NOT G AND E) XOR (F OR C)) XOR ((A AND NOT D) AND ( B XOR H))
+H: ((H OR F) AND ( A XOR D)) AND ((G AND B) OR NOT(C OR LS2 E))
+if(numofround%16==0)
+A: LS2((A OR F) XOR NOT (B AND E)) OR ((C XOR G) AND (D AND H))
+B: ((B AND H) XOR (C XOR LS2 A)) XOR ((G OR D) XOR (E AND NOT F))
+C: ((C AND G) AND (A AND E)) OR LS3((D XOR B) XOR (F OR NOT H))
+D: ((LS3 D AND E) OR (A AND B)) AND ((C OR F) XOR (G XOR H))
+E: ((E AND H) XOR (A XOR F)) XOR NOT((B OR C) AND ( D XOR NOT G))
+F: ((F XOR C) AND (E XOR B)) XOR ((A XOR LS3 H) XOR (D XOR G))
+G: ((G AND E) XOR (B AND F)) AND ((A OR C) XOR ( D AND H))
+H: ((H OR LS2 C) AND NOT( A AND F)) XOR ((B OR D) XOR (E XOR NOT G))
+if(num%24==0)
+A: ((A OR NOT G) XOR (LS3 C AND D)) XOR ((B OR H) AND (E AND F))
+B: ((B AND C) XOR (D XOR E)) XOR ((F XOR G) XOR (A XOR H))
+C: ((C AND G) OR (F XOR NOT A)) OR ((E AND B) OR (D AND H))
+D:((D OR E) XOR (A XOR H)) AND LS2((F XOR NOT C) AND (B AND G))
+E: ((E AND F) OR (D AND G)) XOR LS3((C AND B) XOR (A XOR H))
+F:((F AND B) XOR (C AND NOT A)) OR LS2((E AND G) XOR NOT(D XOR H))
+G: ((G AND A) XOR (C AND D)) AND ((B OR E) XOR ( F OR E))
+H: ((H XOR B) AND (C AND D)) OR ((E XOR A) AND NOT(F XOR G))
+
+if keyth position is 1:
+if (numof round%8==0)
+A: ((C XOR LS2 G) AND ( D OR NOT A)) XOR LS2(( B AND NOT H) XOR (F OR E))
+B: ((LS3 H OR A) OR (G XOR D)) AND ((LS2 E AND B) OR ( C XOR NOT F))
+C: (( D AND C) OR (H XOR B)) XOR (RS3((E AND LS2 G) XOR (NOT A AND F))
+D: (RS2((A AND F) XOR (D OR C)) AND ((H XOR E) OR ( G AND NOT B))
+E: ((B AND C) OR ( NOT D XOR A)) XOR ((LS3 H AND F) OR (G XOR E))
+F: ((G AND NOT A) OR LS2(D OR B)) AND ((E XOR F) XOR ( H AND C))
+G: (( NOT E AND B) XOR (G OR D)) OR ((C AND NOT A) AND ( H XOR F))
+H ((F OR G) AND ( C XOR A)) XOR ((E AND H) OR NOT(D OR LS2 B))
+if(numofround%16==0)
+A: LS2((C OR G) XOR NOT (H AND B)) OR ((D XOR E) AND (A AND F))
+B: ((H AND F) XOR (D XOR LS2 C)) XOR ((E OR A) XOR (B AND NOT G))
+C: ((D AND E) AND (C AND B)) OR LS3((A XOR H) XOR (G OR NOT F))
+D: ((LS3 A AND B) OR (C AND H)) AND ((D OR G) XOR (E XOR F))
+E: ((B AND F) XOR (C XOR G)) XOR NOT((H OR D) AND ( A XOR NOT E))
+F: ((G XOR D) AND (B XOR H)) XOR ((C XOR LS3 F) XOR (A XOR E))
+G: ((E AND B) XOR (H AND G)) AND ((C OR D) XOR ( A AND F))
+H: ((F OR LS2 D) AND NOT( C AND G)) XOR ((H OR A) XOR (B XOR NOT E))
+if(num%24==0)
+A: ((C OR NOT E) XOR (LS3 D AND A)) XOR ((H OR F) AND (B AND G))
+B: ((H AND D) XOR (A XOR B)) XOR ((G XOR E) XOR (C XOR F))
+C: ((D AND E) OR (G XOR NOT C)) OR ((B AND H) OR (A AND F))
+D:((A OR B) XOR (C XOR F)) AND LS2((G XOR NOT D) AND (H AND E))
+E: ((B AND G) OR (A AND E)) XOR LS3((D AND H) XOR (C XOR F))
+F:((G AND H) XOR (D AND NOT C)) OR LS2((B AND E) XOR NOT(A XOR F))
+G: ((E AND C) XOR (D AND A)) AND ((H OR B) XOR ( G OR B))
+H: ((F XOR H) AND (D AND A)) OR ((B XOR C) AND NOT(G XOR E))
+
+After all the operations put A-H together and apply a LS3 function. convert to hex and resultant is your hash
+
+
+
+
+
